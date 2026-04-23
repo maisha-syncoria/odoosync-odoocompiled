@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="os_payment_pos.PaymentScreenPaymentLines"
+       t-inherit="point_of_sale.PaymentScreenPaymentLines"
+       t-inherit-mode="extension">
+        <xpath expr="//div[contains(@class, 'send_payment_cancel')]" position="attributes">
+            <attribute name="t-if">!(['clover_cloud', 'moneris_cloud'].includes(line.payment_method_id.use_payment_terminal) || line.payment_method_id.is_moneris_go_cloud)</attribute>
+        </xpath>
+    </t>
+</templates>

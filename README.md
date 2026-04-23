@@ -1,1 +1,1 @@
-# odoosync-odoocompiled
+# odoosyn-migration

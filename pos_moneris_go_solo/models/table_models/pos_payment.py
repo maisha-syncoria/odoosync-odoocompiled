@@ -1,0 +1,43 @@
+import json
+import logging
+from uuid import uuid4
+from odoo.exceptions import ValidationError
+from odoo import api, fields, models, _
+from odoo.exceptions import UserError, AccessDenied
+
+import requests
+
+_logger = logging.getLogger(__name__)
+
+
+class PosPayment(models.Model):
+    _inherit = "pos.payment"
+
+    pos_payment_transaction = fields.Char('POS Payment Transaction',
+                                          help="POS Payment Transaction with payment terminal")
+
+    idempotency_key = fields.Char('Idempotency Key', help='Use for the moneris payment when refunding')
+
+    card_name = fields.Char('Card Name')
+
+    auth_code = fields.Char('Auth Code')
+
+    tip_amount = fields.Float('Tip Amount')
+
+    masked_pan = fields.Char('Masked Pan')
+
+    payment_terminal_order_reference = fields.Char('Order Id')
+
+    payment_terminal_transaction_id = fields.Char('Moneris Go Transaction Id')
+
+    tender_type = fields.Char('Tender Type')
+
+    is_refund = fields.Boolean(default=False)
+
+    journal_id = fields.Many2one('account.move', string='Journal')
+
+    last_payment_id = fields.Many2one('pos.payment', string='Last Payment')
+
+    is_moneris_payment = fields.Boolean(default=False)
+
+    refunded_idempotency_key = fields.Char('Refunded Idempotency Key', help='Idempotency Key has been used to refund')
