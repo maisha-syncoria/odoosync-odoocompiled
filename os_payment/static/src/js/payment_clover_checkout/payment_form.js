@@ -51,7 +51,10 @@ paymentForm.include({
             }
             return;
         }
-        await this._buildCloverCheckoutPopup(paymentOptionId, processingValues, { isTokenFlow: true });
+        if (typeof this._super === 'function') {
+            return this._super(...arguments);
+        }
+        window.location = '/payment/status';
     },
 
     async _ensureCloverCheckoutInfo(providerId) {
