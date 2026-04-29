@@ -496,7 +496,7 @@ class AccountPaymentRegister(models.TransientModel):
                         self._validate_clover_refund_amount_limit()
 
 
-                    amount = int(self.amount*100)
+                    amount = int(round(self.amount*100,4))
                     print("amount ===>>>{}".format(amount))
 
                     headers = {
