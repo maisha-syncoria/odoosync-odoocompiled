@@ -1,8 +1,8 @@
-    .modal-content {
-     padding: 24px;
-        height: 700px;
-        width: 800px;
-    }
+#clovercheckout_payment_form_modal .modal-content {
+  padding: 24px;
+  height: 700px;
+  width: 800px;
+}
   .clover_container {
     background-color: #FFFFFF;
     border-top-left-radius: 15px;

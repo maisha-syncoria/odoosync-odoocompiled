@@ -356,7 +356,7 @@ class CloverRequest():
             "deviceId": values.get('deviceId'),
             "posId": values.get('posId'),
             "idempotencyId": self.get_idempotency_id(values),  # values.get('idempotencyId'),
-            "amount": int(abs(values.get('amount'))),
+            "amount": int(round(float(values.get('amount')), 0)),
             "isFullRefund": values.get('isFullRefund'),
             "externalPaymentId": values.get('externalPaymentId'),
             "paymentId": values.get('clover_payment_id'),

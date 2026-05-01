@@ -268,7 +268,7 @@ export class PaymentClover extends PaymentInterface {
         var pos_order = this.pos.get_order();
         var settings = this.terminal.settings;
         var selected_paymentline = this.pos.get_order().get_selected_paymentline();
-        var amount = selected_paymentline.amount * 100.0;
+        var amount = Math.round(selected_paymentline.amount * 100);
 
         var headers = {
           "Accept": "application/json",
@@ -343,7 +343,7 @@ export class PaymentClover extends PaymentInterface {
        var pos_order = this.pos.get_order();
         var settings = this.terminal.settings;
         var selected_paymentline = this.pos.get_order().get_selected_paymentline();
-        var amount = selected_paymentline.amount * 100.0;
+        var amount = Math.round(selected_paymentline.amount * 100);
         // var refunded_order =
 
         var headers = {
