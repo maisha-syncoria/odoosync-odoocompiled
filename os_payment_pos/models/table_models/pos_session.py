@@ -4,7 +4,7 @@
 from collections import defaultdict
 import json
 
-from odoo import models, _
+from odoo import models, _, api
 from odoo.tools import float_compare
 
 

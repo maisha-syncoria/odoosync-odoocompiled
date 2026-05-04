@@ -1,6 +1,5 @@
 import {PaymentScreen} from "@point_of_sale/app/screens/payment_screen/payment_screen";
 import {patch} from "@web/core/utils/patch";
-import {onMounted} from "@odoo/owl";
 import {MonerisGoPreauthPopup} from "../preauth_screen/popup/preauth_popup";
 import {SelectPreauthPopup} from "./popup/select_preauth_popup";
 
@@ -18,19 +17,10 @@ patch(PaymentScreen.prototype, {
                 this.env.services.notification.add("Moneris Go is not available as payment method! Please add Syncoria Moneris Go Payment Method.", {type: "warning"});
                 return;
             }
-            debugger
             this.dialog.add(SelectPreauthPopup, {
                 customerId: customer.id,
                 monerisPaymentMethodId:is_moneris_go
             });
-        },
-        async sendForceDone(line) {
-            debugger
-            if (line.payment_method_id.use_payment_terminal == "moneris_cloud" || line.payment_method_id.is_moneris_go_cloud) {
-              return Promise.resolve();
-            }
-
-            return  super.sendForceDone(...arguments);
-        },
+        }
     }
 )

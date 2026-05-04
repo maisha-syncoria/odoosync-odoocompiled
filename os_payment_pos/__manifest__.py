@@ -29,6 +29,8 @@
     'data': [
         # OmniAccount Views
         'security/ir.model.access.csv',
+        'data/force_done_card_names.xml',
+        'views/pos_force_done_card_name_views.xml',
         'views/omni_account_payment.xml',
         'views/pos_payment_method_card_wise_journal.xml',
 

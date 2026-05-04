@@ -39,6 +39,25 @@
                             <group/>
                         </group>
                     </page>
+                    <page invisible="use_payment_terminal != 'moneris_cloud'" string="Force Done Card Names">
+                        <field name="force_done_card_name_ids" widget="many2many" context="{'default_terminal': 'moneris_cloud', 'tree_view_ref': 'os_payment_pos.pos_force_done_card_name_view_tree'}">
+                            <list editable="bottom">
+                                <field name="sequence" widget="handle"/>
+                                <field name="name"/>
+                                <field name="code"/>
+                                <field name="terminal"/>
+                            </list>
+                            <form>
+                                <group>
+                                    <field name="name"/>
+                                    <field name="code"/>
+                                    <field name="terminal"/>
+                                    <field name="sequence"/>
+                                    <field name="active"/>
+                                </group>
+                            </form>
+                        </field>
+                    </page>
                 </notebook>
             </xpath></field>
     </record>

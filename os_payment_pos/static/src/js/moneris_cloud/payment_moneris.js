@@ -388,8 +388,11 @@ export class PaymentMonerisCloud extends PaymentInterface {
                                                                         var order = self.pos.get_order()
                                                                         var paymentline = order.get_selected_paymentline();
                                                                         if (tranRes.receipt.TipAmount && order.config_id.tip_product_id){
-                                                                            self.pos.set_tip(parseFloat(tranRes.receipt.TipAmount)/100);
-                                                                            order.get_selected_paymentline().set_amount( order.get_selected_paymentline().amount + (parseFloat(tranRes.receipt.TipAmount)/100))
+                                                                            var tip_amount = parseFloat(tranRes.receipt.TipAmount);
+                                                                            self.pos.set_tip(tip_amount);
+                                                                            order.get_selected_paymentline().set_amount(
+                                                                                order.get_selected_paymentline().amount + tip_amount
+                                                                            );
                                                                         }
 
 

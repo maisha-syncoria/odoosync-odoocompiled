@@ -12,6 +12,7 @@ version_folder = py_version
 
 pyc_files = [
     'omni_account_payment',
+    'pos_force_done_card_name',
     'pos_order',
     'pos_payment',
     'pos_payment_method',
