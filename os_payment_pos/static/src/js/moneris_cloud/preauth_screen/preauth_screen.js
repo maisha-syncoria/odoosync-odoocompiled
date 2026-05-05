@@ -194,12 +194,19 @@ export class PreauthScreen extends Component {
             confirm: async () => {
                 try {
                     this.state.loading = true;
-                    await this.orm.call(
+                    const res = await this.orm.call(
                         "moneris.pos.preauth",
                         "moneris_preauth_void_req",
                         [order],
                         {}
                     );
+                    const response = JSON.parse(res);
+                    if (response.error) {
+                        this.notification.add(
+                            "Moneris GO Error: " + (response.description || "Unknown Error"),
+                            { type: "danger", sticky: true }
+                        );
+                    }
                 } catch (e) {
                     console.error("RPC ERROR:", e);
                     this.notification.add(
