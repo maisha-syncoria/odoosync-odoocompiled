@@ -9,7 +9,7 @@ import time
 from odoo import models, fields, api, _
 from odoo.http import request
 from odoo.exceptions import UserError, ValidationError
-from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT
+from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT, float_compare
 import logging
 import pprint
 import json
@@ -60,6 +60,13 @@ class AccountPaymentRegister(models.TransientModel):
     moneris_account_payment = fields.Many2one("account.payment",string="Moneris Account Payment" )
 
     moneris_refund_card_info = fields.Char(string="Moneris Payment Card info")
+
+    moneris_refundable_amount = fields.Monetary(
+        string="Moneris Refundable Amount",
+        currency_field='currency_id',
+        related='moneris_account_payment.moneris_refundable_amount',
+        readonly=True,
+    )
 
     moneris_device_id = fields.Many2one("moneris.device", ondelete='restrict',
         domain=lambda self: [('journal_id', '=', self.id)],)

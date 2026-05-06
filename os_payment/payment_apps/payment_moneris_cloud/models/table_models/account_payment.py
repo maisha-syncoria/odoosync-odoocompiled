@@ -5,6 +5,7 @@
 ###############################################################################
 
 from odoo import models, fields, api, _
+from odoo.tools import float_is_zero
 import logging
 from odoo.exceptions import UserError
 import os
@@ -152,6 +153,25 @@ class AccountPayment(models.Model):
     cloud_is_samecard = fields.Boolean(string="Is Same Card?",
         compute="_compute_cloud_is_samecard",)
 
+    moneris_refund_source_payment_id = fields.Many2one(
+        'account.payment',
+        string='Moneris Refund Source Payment',
+        copy=False,
+        readonly=True,
+    )
+
+    moneris_refunded_amount = fields.Monetary(
+        string='Moneris Refunded Amount',
+        currency_field='currency_id',
+        compute='_compute_moneris_refund_balances',
+    )
+
+    moneris_refundable_amount = fields.Monetary(
+        string='Moneris Refundable Amount',
+        currency_field='currency_id',
+        compute='_compute_moneris_refund_balances',
+    )
+
     attachment_id = fields.Many2one(
         string='Payment Attachment',
         comodel_name='ir.attachment',
@@ -172,6 +192,30 @@ class AccountPayment(models.Model):
 
     moneris_merchant_receipt_name = fields.Char(string="Moneris Merchant Receipt Name",
                                                 related="merchant_attachment_id.name")
+
+    @api.depends('amount', 'payment_type', 'moneris_cloud_receiptid', 'moneris_cloud_transid', 'state', 'moneris_refund_source_payment_id')
+    def _compute_moneris_refund_balances(self):
+        for record in self:
+            record.moneris_refunded_amount = 0.0
+            record.moneris_refundable_amount = 0.0
+
+            if record.payment_type != 'inbound' or not record.moneris_cloud_receiptid:
+                continue
+
+            refunds = self.search([
+                ('id', '!=', record.id),
+                ('payment_type', '=', 'outbound'),
+                ('state', '!=', 'cancel'),
+                '|',
+                ('moneris_refund_source_payment_id', '=', record.id),
+                '&',
+                ('moneris_refund_source_payment_id', '=', False),
+                ('moneris_cloud_receiptid', '=', record.moneris_cloud_receiptid),
+                ('moneris_cloud_transid', '=', record.moneris_cloud_transid),
+            ])
+
+            record.moneris_refunded_amount = sum(refunds.mapped('amount'))
+            record.moneris_refundable_amount = max(record.amount - record.moneris_refunded_amount, 0.0)
 
     @api.depends('payment_type')
     def _compute_cloud_is_samecard(self):

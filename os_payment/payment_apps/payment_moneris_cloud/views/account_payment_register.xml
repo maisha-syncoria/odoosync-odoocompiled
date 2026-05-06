@@ -33,6 +33,7 @@
                 <xpath expr="//field[@name='communication']" position="after">
                     <field invisible="use_cloud_terminal == False or payment_type == 'inbound'" name="moneris_account_payment" domain="[('id','in',compute_domain_moneris_account_payment)]"/>
                     <field invisible="moneris_account_payment == False" name="moneris_refund_card_info" readonly="1"/>
+                    <field invisible="use_cloud_terminal == False or payment_type == 'inbound' or moneris_account_payment == False" name="moneris_refundable_amount" readonly="1"/>
                     <field invisible="use_cloud_terminal == False"  name="moneris_is_manual_payment"/>
                     <field invisible="use_cloud_terminal != True and payment_type_inbound != True" name="moneris_cloud_receiptid"/>
                     <field invisible="use_cloud_terminal != True and payment_type_inbound != True" name="moneris_cloud_transid"/>

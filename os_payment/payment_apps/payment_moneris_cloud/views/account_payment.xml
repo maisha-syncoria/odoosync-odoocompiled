@@ -26,6 +26,7 @@
                             <group>
                                 <group>
                                     <field name="is_moneris_refunded" readonly="1"/>
+                                    <field name="moneris_refundable_amount" readonly="1"/>
                                     <field invisible="moneris_cloud_transid == False and payment_type == 'inbound'" name="cloud_is_samecard"/>
                                     <field name="cloud_request_id"/>
                                     <field name="moneris_cloud_completed"/>
