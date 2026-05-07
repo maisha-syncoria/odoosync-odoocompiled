@@ -169,9 +169,9 @@ class ProviderPurolator(models.Model):
 
     purolator_from_onlabel_info = fields.Selection([('same', 'Same as Company Address'),
                                                     ('diff', 'Different')],
-                                                    string='From On Label Selection', default='same')
+                                                    string='From On Label Selection', default='same', groups="base.group_system")
 
-    purolator_label_info = fields.Many2one('res.partner', string='From On Label Partner')
+    purolator_label_info = fields.Many2one('res.partner', string='From On Label Partner', groups="base.group_system")
 
     purolator_notify_sender = fields.Boolean("Email Notification for Sender", default=False, groups="base.group_system")
 

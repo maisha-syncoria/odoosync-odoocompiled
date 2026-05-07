@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': "Odoo Sync Payment Apps",
-    'version': '18.1.5',
+    'version': '18.1.6',
     'summary': """Odoo Sync Payment Apps""",
     'description': """Odoo Sync Payment Apps""",
     'category': 'Payments',
@@ -92,6 +92,7 @@
 
         # 2. Moneris Cloud Invoice Part
         'payment_apps/payment_moneris_cloud/security/ir.model.access.csv',
+        'payment_apps/payment_moneris_cloud/data/system_data.xml',
         'payment_apps/payment_moneris_cloud/views/moneris_device.xml',
         # 'payment_apps/payment_moneris_cloud/views/account_move.xml',
         'payment_apps/payment_moneris_cloud/views/account_journal.xml',

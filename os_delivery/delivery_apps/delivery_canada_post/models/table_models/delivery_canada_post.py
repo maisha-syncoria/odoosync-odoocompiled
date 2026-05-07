@@ -85,7 +85,7 @@ class Providercanadapost(models.Model):
     def _domain_cn_service(self):
         return [(["code","=ilike","DOM%"])]
 
-    delivery_type = fields.Selection(selection_add=[('canadapost', _("Canada Post"))],
+    delivery_type = fields.Selection(selection_add=[('canadapost', ("Canada Post"))],
                                      ondelete={'canadapost': lambda recs: recs.write(
                                          {'delivery_type': 'fixed', 'fixed_price': 0})})
 
@@ -110,19 +110,19 @@ class Providercanadapost(models.Model):
     canadapost_default_packaging_id = fields.Many2one('stock.package.type', string="Canada-post Default Package Type",
                                                       default=_get_defaultPackage)
 
-    canadapost_weight_unit = fields.Selection(selection=[('kg', _('KG')), ('lb', _('LB'))],
+    canadapost_weight_unit = fields.Selection(selection=[('kg', ('KG')), ('lb', ('LB'))],
                                               string="Package Weight Unit", default='kg', required=True)
 
-    canadapost_distance_unit = fields.Selection(selection=[('in', _('IN')), ('cm', _('CM'))],
+    canadapost_distance_unit = fields.Selection(selection=[('in', ('IN')), ('cm', ('CM'))],
                                                 string="Package Dimension Unit", default='cm', required=True)
 
     canadapost_option_type = fields.Many2many(
         string="Options", comodel_name="canadapost.option.type")
 
     canadapost_nondelivery_handling = fields.Selection(selection=[
-        ('RASE', _('Return at Sender’s Expense')),
-        ('RTS', _('Return to Sender')),
-        ('ABAN', _('Abandon'))],
+        ('RASE', ('Return at Sender’s Expense')),
+        ('RTS', ('Return to Sender')),
+        ('ABAN', ('Abandon'))],
         string="Non-delivery Handling", default="RTS")
 
     canadapost_customer_type = fields.Selection(selection=[(
@@ -139,12 +139,12 @@ class Providercanadapost(models.Model):
 
     canadapost_mailed_on_behalf_of = fields.Char(string="Mailed on Behalf of")
 
-    canadapost_label_image_format = fields.Selection(selection=[('pdf', _('PDF')), ('zpl', _('ZPL'))],
+    canadapost_label_image_format = fields.Selection(selection=[('pdf', ('PDF')), ('zpl', ('ZPL'))],
                                                      string="Label Format", default='pdf')
 
     canadapost_void_shipment = fields.Boolean(string='Canada-post Void Shipment')
 
-    canadapost_pickup_indicator = fields.Selection(selection=[('pickup', _(
-        'Pick-up')), ('deposit', _('Deposit'))], string='Pick Indicator', default='pickup')
+    canadapost_pickup_indicator = fields.Selection(selection=[('pickup', (
+        'Pick-up')), ('deposit', ('Deposit'))], string='Pick Indicator', default='pickup')
 
     canadapost_country_flag = fields.Boolean(default=False)
