@@ -193,7 +193,7 @@ class AccountPayment(models.Model):
     moneris_merchant_receipt_name = fields.Char(string="Moneris Merchant Receipt Name",
                                                 related="merchant_attachment_id.name")
 
-    @api.depends('amount', 'payment_type', 'moneris_cloud_receiptid', 'moneris_cloud_transid', 'state', 'moneris_refund_source_payment_id')
+    @api.depends('amount', 'payment_type', 'journal_id', 'moneris_cloud_receiptid', 'moneris_cloud_transid', 'state', 'moneris_refund_source_payment_id')
     def _compute_moneris_refund_balances(self):
         for record in self:
             record.moneris_refunded_amount = 0.0
@@ -206,6 +206,7 @@ class AccountPayment(models.Model):
                 ('id', '!=', record.id),
                 ('payment_type', '=', 'outbound'),
                 ('state', '!=', 'cancel'),
+                ('journal_id', '=', record.journal_id.id),
                 '|',
                 ('moneris_refund_source_payment_id', '=', record.id),
                 '&',
