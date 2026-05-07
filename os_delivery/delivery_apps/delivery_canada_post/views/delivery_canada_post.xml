@@ -8,8 +8,8 @@
             <xpath expr="//page[@name='destination']" position="before">
                 <page invisible="delivery_type != 'canadapost'" name="canadapost_config" string="Canada Post Configuration">
                     <group>
-                        <group>
-                            <field name="token" readonly="1" required="delivery_type == 'canadapost'"/>
+                        <group string="General Information" name="general_information_group">
+                            <field name="token" invisible="1" readonly="1" required="delivery_type == 'canadapost'"/>
                             <field invisible="1" name="canadapost_country_flag"/>
                             <field name="canadapost_service_code" required="delivery_type == 'canadapost'"/>
                             <field name="canadapost_return_service_code" required="delivery_type == 'canadapost'"/>
@@ -22,10 +22,10 @@
                             <field invisible="canadapost_customer_type == 'counter'" name="canadapost_mailed_on_behalf_of" required="canadapost_customer_type == 'commercial'"/>
                             <field invisible="canadapost_customer_type == 'counter'" name="canadapost_pickup_indicator" required="delivery_type == 'canadapost'"/>
                         </group>
-                        <group>
-                            <h3>
-                                Package Information
-                            </h3>
+                        <group string="Package Information" name="package_information_group">
+<!--                            <h3>-->
+<!--                                Package Information-->
+<!--                            </h3>-->
                             <field context="{'package_carrier_type': 'canadapost' }" name="canadapost_default_packaging_id" required="delivery_type == 'canadapost'"/>
                             <field name="canadapost_weight_unit" required="delivery_type == 'canadapost'"/>
                             <field name="canadapost_distance_unit" required="delivery_type == 'canadapost'"/>

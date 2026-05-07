@@ -9,6 +9,7 @@ from odoo import api, models, fields, _
 from odoo.exceptions import UserError
 from .canpost_request import CanadaPostRequest
 from odoo.tools import pdf
+from markupsafe import Markup, escape
 from odoo.addons.odoosync_base.utils.app_delivery import AppDelivery
 
 import logging
@@ -33,6 +34,58 @@ def _convert_weight(weight, unit='KG'):
             raise ValueError
     else:
         raise ValueError
+
+
+def _format_canadapost_price_breakdown_html(shipment_price):
+    """Build HTML from a Canada Post shipment price payload."""
+    if not shipment_price:
+        return Markup("")
+
+    items = []
+
+    base = shipment_price.get("base-amount")
+    if base is not None:
+        items.append((_("Base"), _("%s CAD") % base))
+
+    opts = shipment_price.get("priced-options") or {}
+    priced_option = opts.get("priced-option")
+    if priced_option:
+        for opt in (priced_option if isinstance(priced_option, list) else [priced_option]):
+            code = opt.get("option-code", "")
+            price = opt.get("option-price", "0")
+            if code or price != "0.00":
+                items.append((_("Option %s") % code, _("%s CAD") % price))
+
+    adjustments = shipment_price.get("adjustments") or {}
+    adjustment = adjustments.get("adjustment")
+    if adjustment:
+        for adj in (adjustment if isinstance(adjustment, list) else [adjustment]):
+            code = adj.get("adjustment-code", "")
+            amount = adj.get("adjustment-amount", "0")
+            if code or amount != "0.00":
+                items.append((_("Adjustment %s") % code, _("%s CAD") % amount))
+
+    pre_tax = shipment_price.get("pre-tax-amount")
+    if pre_tax is not None:
+        items.append((_("Pre-tax"), _("%s CAD") % pre_tax))
+
+    for key, label in (("gst-amount", "GST"), ("pst-amount", "PST"), ("hst-amount", "HST")):
+        value = shipment_price.get(key)
+        if value is not None and value != "0.00":
+            items.append((_(label), _("%s CAD") % value))
+
+    due = shipment_price.get("due-amount")
+    if due is not None:
+        items.append((_("Due (final cost)"), _("%s CAD") % due))
+
+    if not items:
+        return Markup("")
+
+    li = "".join(
+        "<li>%s: %s</li>" % (escape(label), escape(value))
+        for label, value in items
+    )
+    return Markup("<div><b>%s</b><ul>%s</ul></div>") % (escape(_("Cost breakdown")), Markup(li))
 
 
 class CanadapostServiceType(models.Model):
