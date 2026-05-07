@@ -207,12 +207,7 @@ class AccountPayment(models.Model):
                 ('payment_type', '=', 'outbound'),
                 ('state', '!=', 'cancel'),
                 ('journal_id', '=', record.journal_id.id),
-                '|',
-                ('moneris_refund_source_payment_id', '=', record.id),
-                '&',
-                ('moneris_refund_source_payment_id', '=', False),
-                ('moneris_cloud_receiptid', '=', record.moneris_cloud_receiptid),
-                ('moneris_cloud_transid', '=', record.moneris_cloud_transid),
+                ('moneris_refund_source_payment_id', '=', record.id)
             ])
 
             record.moneris_refunded_amount = sum(refunds.mapped('amount'))
