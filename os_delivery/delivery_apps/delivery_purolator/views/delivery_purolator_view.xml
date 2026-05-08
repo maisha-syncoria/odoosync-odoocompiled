@@ -31,7 +31,7 @@
                             <field name="purolator_notify_sender"/>
                             <field name="purolator_notify_receiver"/>
                         </group>
-                        <group invisible="purolator_shipment_type != 'domestic'">
+                        <group invisible="purolator_shipment_type != 'domestic'" groups="base.group_system">
                             <b>
                                 Label Information
                             </b>
