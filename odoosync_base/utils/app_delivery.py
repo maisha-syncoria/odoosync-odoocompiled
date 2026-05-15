@@ -7,8 +7,7 @@
 from os import access
 
 import requests
-
-from odoo import models, fields, api, _
+from odoo import models, fields, api, SUPERUSER_ID
 from odoo.exceptions import UserError
 from odoo.http import request
 
@@ -40,6 +39,12 @@ class AppDelivery:
         self.data['packages']["pieces"] = []
         for package in packages:
             self.add_packages(package=package)
+
+
+    def _get_omnisync_account(self):
+        env = request.env(user=SUPERUSER_ID)
+        delivery_carrier = env['delivery.carrier'].search([('token', '=', self.service_key)],limit=1)
+        return delivery_carrier.account_id if delivery_carrier else False
 
     def get_shipper(self, partner):
         """Function Convert Partner to OmniSync Partner Vals
@@ -186,12 +191,9 @@ class AppDelivery:
         }
         data = self.__dict__
 
-        omnisync_id = False
-        # delivery_id = env['delivery.carrier'].search([('token', '=', self.service_key)],limit=1)
-        # if delivery_id:
-        #     omnisync_id = delivery_id[0].account_id
+        omnisync_id = self._get_omnisync_account()
         
-        rate_list = request.env["omnisync.connector"].omnisync_api_call(
+        rate_list = request.env(user=SUPERUSER_ID)["omnisync.connector"].omnisync_api_call(
             headers=headers, 
             url=url, 
             request_type=request_type, 
@@ -207,6 +209,8 @@ class AppDelivery:
         rate_list['errors_message'] = 'No Rating Found' if rate_list == 0 else rate_list.get("errors")
 
         return rate_list
+
+
 
 
     #Shipping Stuff
@@ -225,13 +229,10 @@ class AppDelivery:
         }
         data = self.__dict__
 
-        omnisync_id = False
-        delivery_id = env['delivery.carrier'].search([('token', '=', self.service_key)],limit=1)
-        if delivery_id:
-            omnisync_id = delivery_id[0].account_id
+        omnisync_id = kwargs.get('omnisync_id') or self._get_omnisync_account()
 
         try:
-            formatted_response = request.env["omnisync.connector"].omnisync_api_call(
+            formatted_response = request.env(user=SUPERUSER_ID)["omnisync.connector"].omnisync_api_call(
                 headers=headers, 
                 url=url, 
                 request_type=request_type, 
@@ -267,14 +268,11 @@ class AppDelivery:
             "tracking_pin": tracking,
             "document_type": label_format
         }
-        omnisync_id = False
-        delivery_id = env['delivery.carrier'].search([('token', '=', self.service_key)],limit=1)
-        if delivery_id:
-            omnisync_id = delivery_id[0].account_id
+        omnisync_id = self._get_omnisync_account()
 
 
         try:
-            formatted_response = request.env["omnisync.connector"].omnisync_api_call(
+            formatted_response = request.env(user=SUPERUSER_ID)["omnisync.connector"].omnisync_api_call(
                 headers=headers,
                 url=url,
                 request_type=request_type,
@@ -319,13 +317,10 @@ class AppDelivery:
             "X-Service-Key": self.service_key if hasattr(self, 'service_key') else kwargs.get('service_key'),
         }
         data = self.__dict__
-        omnisync_id = False
-        delivery_id = env['delivery.carrier'].search([('token', '=', self.service_key)],limit=1)
-        if delivery_id:
-            omnisync_id = delivery_id[0].account_id
+        omnisync_id = kwargs.get('omnisync_id') or self._get_omnisync_account()
 
         try:
-            formatted_response = request.env["omnisync.connector"].omnisync_api_call(
+            formatted_response = request.env(user=SUPERUSER_ID)["omnisync.connector"].omnisync_api_call(
                 headers=headers,
                 url=url,
                 request_type=request_type,
