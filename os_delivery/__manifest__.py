@@ -25,14 +25,14 @@
         # # =============================Delivery:Purolator======================================
         # # =====================================================================================
 
-        "delivery_apps/delivery_purolator/security/ir.model.access.csv",
-        "delivery_apps/delivery_purolator/data/delivery_purolator.xml",
-        "delivery_apps/delivery_purolator/views/delivery_purolator_view.xml",
-        "delivery_apps/delivery_purolator/views/res_config_settings_views.xml",
-        "delivery_apps/delivery_purolator/views/stock_picking_views.xml",
-        "delivery_apps/delivery_purolator/views/choose_delivery_carrier.xml",
-        "delivery_apps/delivery_purolator/views/product_template_views.xml",
-        "delivery_apps/delivery_purolator/views/sale.xml",
+        # "delivery_apps/delivery_purolator/security/ir.model.access.csv",
+        # "delivery_apps/delivery_purolator/data/delivery_purolator.xml",
+        # "delivery_apps/delivery_purolator/views/delivery_purolator_view.xml",
+        # "delivery_apps/delivery_purolator/views/res_config_settings_views.xml",
+        # "delivery_apps/delivery_purolator/views/stock_picking_views.xml",
+        # "delivery_apps/delivery_purolator/views/choose_delivery_carrier.xml",
+        # "delivery_apps/delivery_purolator/views/product_template_views.xml",
+        # "delivery_apps/delivery_purolator/views/sale.xml",
 
 
         # # =====================================================================================

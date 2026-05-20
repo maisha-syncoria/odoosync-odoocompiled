@@ -13,6 +13,7 @@ version_folder = py_version
 pyc_files = [
     'omni_account_payment',
     'payment',
+    'payment_token',
     'account_journal',
     'account_payment_card_reference',
     'payment_transaction_card_reference',

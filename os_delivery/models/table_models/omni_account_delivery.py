@@ -10,6 +10,8 @@ import logging
 
 _logger = logging.getLogger(__name__)
 
+AVAILABLE_DELIVERY_TYPES = ["canadapost"]
+
 
 class OmniAccountDelivery(models.Model):
     _inherit = "omni.account"

@@ -12,6 +12,16 @@ import logging
 
 _logger = logging.getLogger(__name__)
 
+AVAILABLE_PAYMENT_TYPES = [
+    "moneris",
+    "bambora_checkout",
+    "clover_checkout",
+    "clover_cloud",
+    "moneris_cloud",
+    "moneris_cloud_go",
+    "global_payment",
+]
+
 
 class OmniAccountPayment(models.Model):
     _inherit = "omni.account"
