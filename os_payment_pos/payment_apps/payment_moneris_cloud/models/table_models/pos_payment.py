@@ -154,6 +154,18 @@ class PosOrderPaymentInherit(models.Model):
 
     moneris_card_type = fields.Char("Card Type ")
 
+    moneris_preauth_id = fields.Many2one(
+        'moneris.pos.preauth',
+        string="Moneris Go Preauth",
+        ondelete='set null',
+    )
+
+    moneris_preauth_order_id = fields.Char("Moneris Go Preauth Order ID")
+
+    moneris_preauth_transaction_id = fields.Char("Moneris Go Preauth Transaction ID")
+
+    moneris_preauth_settlement_amount = fields.Float("Moneris Go Settlement Amount")
+
     is_moneriscloud_payment = fields.Boolean(
         default=False,
         compute='compute_is_moneriscloud_payment')

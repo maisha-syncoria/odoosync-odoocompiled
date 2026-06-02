@@ -20,7 +20,7 @@
     "currency": "USD",
 
     'category': 'Payment',
-    'version': '17.1.5',
+    'version': '17.1.6',
 
     # any module necessary for this one to work correctly
     'depends': ['os_payment', 'point_of_sale'],

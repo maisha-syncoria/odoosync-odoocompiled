@@ -29,6 +29,8 @@ class MonerisPreauth(models.Model):
 
     total_amount = fields.Float(string="Total Amount")
 
+    settled_amount = fields.Float(string="Settled Amount", default=0.0)
+
     transaction_id = fields.Char(string="Transaction ID")
 
     status = fields.Selection([('pending', 'Pending'),

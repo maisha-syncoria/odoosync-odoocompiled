@@ -110,6 +110,7 @@ export class PreauthScreen extends Component {
                 "order_id",
                 "terminal_id",
                 "total_amount",
+                "settled_amount",
                 "transaction_id",
                 "status",
                 "customer_id",

@@ -58,6 +58,7 @@
                                 <div class="col wide p-2">Order Number</div>
                                 <div class="col p-2">Customer</div>
                                 <div class="col p-2">Total Amount</div>
+                                <div class="col p-2">Settled Amount</div>
                                 <div class="col narrow p-2">Status</div>
                                 <div class="col very-narrow p-2"></div>
                             </div>
@@ -70,6 +71,7 @@
                                     <div class="col wide p-2"><t t-esc="order.order_id"/></div>
                                     <div class="col p-2"><t t-esc="getPartner(order)"/></div>
                                     <div class="col end p-2"><t t-esc="getTotal(order)"/></div>
+                                    <div class="col end p-2"><t t-esc="env.utils.formatCurrency(order.settled_amount)"/></div>
                                     <div class="col narrow p-2"><t t-esc="getStatusText(order)"/></div>
                                     <div class="col very-narrow delete-button p-2">
                                         <i class="fa fa-trash"
@@ -92,6 +94,7 @@
                                     <div><strong>Order #:</strong> <t t-esc="order.order_id"/></div>
                                     <div><strong>Customer:</strong> <t t-esc="getPartner(order)"/></div>
                                     <div><strong>Total:</strong> <t t-esc="getTotal(order)"/></div>
+                                    <div><strong>Settled:</strong> <t t-esc="env.utils.formatCurrency(order.settled_amount)"/></div>
                                     <div class="col very-narrow delete-button p-2">
                                         <i class="fa fa-trash"
                                            aria-hidden="true"

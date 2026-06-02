@@ -23,6 +23,7 @@ export class SelectPreauthPopup extends Component {
         this.state = useState({
             preauthOrders: [],
             selectedOrder: null,
+            settlementAmount: "",
             loading: true,
         });
 
@@ -41,7 +42,7 @@ export class SelectPreauthPopup extends Component {
                     ["status", "=", "confirmed"],
                     ["moneris_go_payment_method",'in',this.props.monerisPaymentMethodId.map(m => m.id)]
                 ],
-                ["name", "order_date", "order_id", "transaction_id",'moneris_go_payment_method', "total_amount", "status"]
+                ["name", "order_date", "order_id", "transaction_id", "moneris_go_payment_method", "total_amount", "settled_amount", "status"]
             );
             this.state.preauthOrders = orders;
         } catch (err) {
@@ -53,8 +54,20 @@ export class SelectPreauthPopup extends Component {
     }
 
     selectOrder(order) {
-        debugger
         this.state.selectedOrder = order;
+        const dueAmount = this.pos.get_order().get_due();
+        this.state.settlementAmount = dueAmount.toFixed(2);
+    }
+
+    onSettlementAmountInput(ev) {
+        this.state.settlementAmount = ev.target.value;
+    }
+
+    getMaxCompletionAmount() {
+        if (!this.state.selectedOrder) {
+            return 0;
+        }
+        return Math.max(0, (this.state.selectedOrder.total_amount * 4) - 1);
     }
 
     async confirmSelection() {
@@ -63,14 +76,30 @@ export class SelectPreauthPopup extends Component {
             return;
         }
 
-
         const order = this.pos.get_order();
-        if (order.get_due() < this.state.selectedOrder.total_amount) {
-            this.notification.add("Authorized amount is greater than remaining amount.", {type: "warning"});
+        const dueAmount = order.get_due();
+        const authorizedAmount = this.state.selectedOrder.total_amount;
+        const settlementAmount = Number(this.state.settlementAmount);
+
+        if (!settlementAmount || isNaN(settlementAmount) || settlementAmount <= 0) {
+            this.notification.add("Please enter a valid settlement amount.", {type: "warning"});
             return;
         }
+
+        if (settlementAmount > dueAmount) {
+            this.notification.add("Settlement amount cannot exceed the remaining amount due.", {type: "warning"});
+            return;
+        }
+        if (settlementAmount >= 1500 && settlementAmount >= (authorizedAmount * 4)) {
+            this.notification.add(
+                "Completion amount reaches the Moneris warning threshold. Use a smaller amount or create a larger preauth.",
+                {type: "warning", sticky: true}
+            );
+            return;
+        }
+
         const matchedMethod = this.props.monerisPaymentMethodId.find(
-        pm => pm.id === this.state.selectedOrder.moneris_go_payment_method[0]
+            (pm) => pm.id === this.state.selectedOrder.moneris_go_payment_method[0]
         );
 
         if (!matchedMethod) {
@@ -79,8 +108,13 @@ export class SelectPreauthPopup extends Component {
         }
         try {
             this.state.loading = true; // Start loader
-            debugger
-            const args = [this.state.selectedOrder,matchedMethod.id,order.id, ...(this.props.extraArgs || [])];
+            const args = [
+                this.state.selectedOrder,
+                matchedMethod.id,
+                order.id,
+                settlementAmount,
+                ...(this.props.extraArgs || []),
+            ];
             const res = await this.orm.call(
                 "moneris.pos.preauth",          // model
                 "moneris_preauth_complete_req",          // method
@@ -90,7 +124,6 @@ export class SelectPreauthPopup extends Component {
 
             console.log("RPC OK:", res);
             const response = JSON.parse(res);
-            debugger
             if (response.errors_message) {
                 return this.notification.add("Moneris GO Error: " + (response.errors_message), {
                     type: "danger",
@@ -104,10 +137,16 @@ export class SelectPreauthPopup extends Component {
                 });
             }
             else{
-                debugger
                 order.add_paymentline(matchedMethod);
-                order.get_selected_paymentline().set_amount(this.state.selectedOrder.total_amount);
-                order.get_selected_paymentline().set_payment_status('done');
+                const paymentLine = order.get_selected_paymentline();
+                paymentLine.moneris_preauth_id = this.state.selectedOrder.id;
+                paymentLine.moneris_preauth_order_id = this.state.selectedOrder.order_id;
+                paymentLine.moneris_preauth_transaction_id = this.state.selectedOrder.transaction_id;
+                paymentLine.moneris_preauth_settlement_amount = settlementAmount;
+                paymentLine.moneris_cloud_receiptid = this.state.selectedOrder.order_id;
+                paymentLine.moneris_cloud_transid = this.state.selectedOrder.transaction_id;
+                paymentLine.set_amount(settlementAmount);
+                paymentLine.set_payment_status('done');
             }
 
 

@@ -26,6 +26,8 @@
                             <group>
                                 <field name="customer_id" readonly="1"/>
                                 <field name="total_amount" readonly="1"/>
+                                <field name="settled_amount" readonly="1"/>
+                                <field name="moneris_settled_order_id" readonly="1"/>
                                 <field name="status" readonly="1"/>
                             </group>
                         </group>
@@ -56,6 +58,7 @@
                     <field name="order_id"/>
                     <field name="terminal_id"/>
                     <field name="total_amount"/>
+                    <field name="settled_amount"/>
                     <field name="status"/>
                 </list>
             </field>

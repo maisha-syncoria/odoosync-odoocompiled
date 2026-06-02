@@ -16,6 +16,16 @@
             </xpath>
             <!-- attrs="{'invisible': [('is_moneris_cloud', '=', 'False')]} -->
             <xpath expr="//sheet" position="inside">
+                <group invisible="not moneris_preauth_transaction_id" string="Moneris Go Preauth">
+                    <group>
+                        <field name="moneris_preauth_id" readonly="True"/>
+                        <field name="moneris_preauth_order_id" readonly="True"/>
+                    </group>
+                    <group>
+                        <field name="moneris_preauth_transaction_id" readonly="True"/>
+                        <field name="moneris_preauth_settlement_amount" readonly="True"/>
+                    </group>
+                </group>
                 <notebook>
                     <page invisible="is_moneriscloud_payment == False" string="Moneris Cloud Response">
                         <group>

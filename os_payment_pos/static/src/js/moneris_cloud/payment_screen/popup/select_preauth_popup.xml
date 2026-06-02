@@ -56,6 +56,12 @@
                                         </span>
                                     </div>
                                     <div class="me-2">
+                                        <strong>Settled:</strong>
+                                        <span class="fw-bold">
+                                            <t t-esc="order.settled_amount"/> ৳
+                                        </span>
+                                    </div>
+                                    <div class="me-2">
                                         <i class="fa fa-credit-card"></i>
                                         <t t-esc="order.moneris_go_payment_method[1]"/>
                                     </div>
@@ -72,6 +78,30 @@
                         <div class="fs-5">No preauth orders found</div>
                     </div>
                 </t>
+
+                <div t-if="!state.loading and state.selectedOrder" class="mt-4 border-top pt-3">
+                    <div class="fw-bold mb-2">Settlement Amount</div>
+                    <div class="input-group">
+                        <span class="input-group-text">$</span>
+                        <input
+                            type="number"
+                            class="form-control"
+                            min="0.01"
+                            step="0.01"
+                            t-att-value="state.settlementAmount"
+                            t-on-input="onSettlementAmountInput"
+                        />
+                    </div>
+                    <div class="text-muted small mt-2">
+                        Authorized: <t t-esc="state.selectedOrder.total_amount"/> |
+                        Settled: <t t-esc="state.selectedOrder.settled_amount"/> |
+                        Due: <t t-esc="pos.get_order().get_due()"/> |
+                        Max Completion Amount: <t t-esc="getMaxCompletionAmount()"/>
+                    </div>
+                    <div class="text-muted small mt-1">
+                        Moneris allows one completion per preauth. Completing a smaller amount settles that amount and releases the unused balance.
+                    </div>
+                </div>
             </div>
 
             <!-- Footer -->

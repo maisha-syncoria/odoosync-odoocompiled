@@ -1,6 +1,5 @@
 from . import omni_account_payment
 from . import payment
-from . import payment_token
 from . import account_journal
 from . import account_payment_card_reference
 from . import payment_transaction_card_reference
