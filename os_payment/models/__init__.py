@@ -14,6 +14,7 @@ pyc_files = [
     'omni_account_payment',
     'payment',
     'account_journal',
+    'payment_token',
     'account_payment_card_reference',
     'payment_transaction_card_reference',
 ]
