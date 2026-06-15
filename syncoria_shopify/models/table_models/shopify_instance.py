@@ -17,6 +17,12 @@ class ModelName(models.Model):
 
     apply_tax = fields.Boolean(string='Apply Tax', default=True)
 
+    shopify_fiscal_tax_fallback = fields.Boolean(
+        string="Fallback to Fiscal Position When Shopify Tax Is Missing",
+        default=False,
+        help="Use fiscal position taxes only when Apply Tax is enabled, a fiscal position is set, and Shopify sends no tax information.",
+    )
+
     marketplace_app_id = fields.Integer(string='App ID',default=0)
 
     marketplace_instance_type = fields.Selection(selection_add=[('shopify', 'Shopify')], default='shopify')

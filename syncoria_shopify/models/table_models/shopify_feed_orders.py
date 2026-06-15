@@ -8,6 +8,7 @@ import json
 import requests
 import base64
 import re
+from markupsafe import Markup
 from odoo import models, fields, api, _, SUPERUSER_ID
 from odoo.exceptions import UserError, ValidationError
 

@@ -54,7 +54,6 @@
                                 </group>
                                 <group>
                                     <field name="language_id"/>
-                                    <field name="fiscal_position_id" domain="[('company_id', 'in', (False, company_id))]"/>
                                     <field name="pricelist_id" required="1" domain="[('company_id', 'in', (False, company_id))]"/>
                                     <field name="payment_term_id" domain="[('company_id', 'in', (False, company_id))]"/>
                                     <field name="default_invoice_policy" widget="radio"/>
@@ -109,9 +108,17 @@
                                             <field name="journal_id" />
                                         </list></field>
                                 </group>
+                                <separator string="Tax Rules"/>
+                                <div class="text-muted">
+                                    Configure how Shopify taxes are applied, when fiscal position should be used, and how Shopify tax records are matched or created in Odoo.
+                                </div>
                                 <group>
 <!--                                    <field name="marketplace_journal_id" domain="[('company_id', 'in', (False, company_id))]"/>-->
+                                    <separator string="Shopify Tax" colspan="2"/>
                                     <field name="apply_tax"/>
+                                    <separator string="Fiscal Fallback" colspan="2"/>
+                                    <field name="fiscal_position_id" domain="[('company_id', 'in', (False, company_id))]"/>
+                                    <field name="shopify_fiscal_tax_fallback" invisible="not apply_tax or not fiscal_position_id"/>
                                     <!--                                    <field name="marketplace_payment_journal_id" required="1"-->
                                     <!--                                           domain="[('type','in',('bank','cash'))]"/>-->
 <!--                                    <field domain="[('type','in',('bank','cash')),('company_id', 'in', (False, company_id))]" name="marketplace_refund_journal_id" required="1"/>-->

@@ -33,7 +33,7 @@
     "price": 5000,
     "currency": "USD",
     'category': 'Sales',
-    'version': '18.1.3',
+    'version': '18.1.4',
     'depends': ['base','os_marketplace'],
     'images': [
         'static/description/banner.gif',
